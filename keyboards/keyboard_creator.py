@@ -38,6 +38,7 @@ def callback_query(call):
     elif call.data == "cb_custom":
         custom_command(call.message)
     elif call.data == "cb_history":
-        bot.send_message(call.message.chat.id, "Нажмите на команду /history, чтобы просмотреть историю запросов.")
+        bot.send_message(call.message.chat.id, "Нажмите на команду /history, чтобы просмотреть историю запросов."
+                                               "\n\nВведите команду /clear, чтобы очистить историю запросов.")
     elif call.data == "cb_feedback":
         feedback_command(call.message)
