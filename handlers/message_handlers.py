@@ -1,6 +1,6 @@
 import sqlite3
 from config import bot
-from database.create_database import save_message_to_db
+from database.create_database import save_message_to_db, clear_database
 from functions.end_of_func import end_of_func
 from functions.flight_prices import get_lowest_price, get_custom_prices, get_highest_price
 from keyboards.keyboard_creator import gen_markup
@@ -68,7 +68,21 @@ def history_command(message):
     conn.close()
     if history:
         messages = [message[0] for message in history]
-        bot.send_message(message.chat.id, f"История ваших запросов: {', '.join(messages)}")
+        for msg in messages:
+            bot.send_message(message.chat.id, msg)
     else:
         bot.send_message(message.chat.id, "У вас пока нет истории запросов.")
+    end_of_func(message)
+
+
+@bot.message_handler(commands=['clear'])
+def clear_command(message):
+    clear_database()
+    bot.send_message(message.chat.id, "История запросов очищена.")
+
+
+@bot.message_handler(func=lambda message: True)
+def reply_to_message(message):
+    bot.send_message(message.chat.id, f"К сожалению, я тебя не понял."
+                                      f"\nВыбери команду из списка ниже.")
     end_of_func(message)
