@@ -78,6 +78,7 @@
 ## Разбор кода:
 
 # Подключение к базе данных
+'''python
 conn = sqlite3.connect('hw_2_database.db')
 c = conn.cursor()
 
