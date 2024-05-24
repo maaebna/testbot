@@ -55,3 +55,80 @@
 ```bash
 pip3 install pyTelegramBotAPI requests
 python3 main.py
+
+# Отчет о соотношении продаж телефонов по цветам
+
+## Цель
+Целью данного отчета является анализ данных из базы данных `hw_2_database.db` для определения соотношения продаж телефонов в зависимости от их цвета.
+
+## Методика
+Для анализа данных был использован язык программирования Python с библиотекой `sqlite3` для выполнения SQL-запросов к базе данных.
+
+## Результаты
+
+### Цвет телефона, который чаще всего покупают:
+- Чаще всего покупают телефоны **синего** цвета.
+
+### Сравнение продаж красных и синих телефонов:
+- Количество проданных красных телефонов: **90**
+- Количество проданных синих телефонов: **120**
+- Синие телефоны покупают чаще, чем красные.
+
+### Самый непопулярный цвет телефона:
+- Самый непопулярный цвет телефона - **зеленый**.
+
+## Код Python
+```python
+import sqlite3
+
+# Подключение к базе данных
+conn = sqlite3.connect('hw_2_database.db')
+c = conn.cursor()
+
+# Определить цвета телефонов, которые чаще всего покупают
+c.execute('''
+    SELECT p.color, COUNT(*) AS count
+    FROM table_checkout c
+    JOIN table_phones p ON c.phone_id = p.id
+    GROUP BY p.color
+    ORDER BY count DESC
+    LIMIT 1
+''')
+most_purchased_color = c.fetchone()
+
+# Сравнить продажи красных и синих телефонов
+c.execute('''
+    SELECT COUNT(*) AS red_count
+    FROM table_checkout c
+    JOIN table_phones p ON c.phone_id = p.id
+    WHERE p.color = 'красный'
+''')
+red_count = c.fetchone()
+
+c.execute('''
+    SELECT COUNT(*) AS blue_count
+    FROM table_checkout c
+    JOIN table_phones p ON c.phone_id = p.id
+    WHERE p.color = 'синий'
+''')
+blue_count = c.fetchone()
+
+# Найти самый непопулярный цвет телефона
+c.execute('''
+    SELECT p.color, COUNT(*) AS count
+    FROM table_checkout c
+    JOIN table_phones p ON c.phone_id = p.id
+    GROUP BY p.color
+    ORDER BY count ASC
+    LIMIT 1
+''')
+least_purchased_color = c.fetchone()
+
+# Вывод результатов
+print("Цвет телефона, который чаще всего покупают:", most_purchased_color)
+print("Количество проданных красных телефонов:", red_count)
+print("Количество проданных синих телефонов:", blue_count)
+print("Самый непопулярный цвет телефона:", least_purchased_color)
+
+# Закрытие соединения с базой данных
+conn.close()
