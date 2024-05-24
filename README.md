@@ -52,7 +52,7 @@
 По любым вопросам или обратной связи вы можете обратиться к создателю бота.
 Используйте команду `/feedback` или свяжитесь напрямую в Telegram - @maaebna.
 
-
+## Запуск бота
 ```bash
 pip3 install pyTelegramBotAPI requests
 python3 main.py
