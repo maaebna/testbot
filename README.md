@@ -75,15 +75,13 @@
 ### Самый непопулярный цвет телефона:
 - Самый непопулярный цвет телефона - **зеленый**.
 
-## Код Python
-```python
-import sqlite3
+## Разбор кода:
 
 # Подключение к базе данных
 conn = sqlite3.connect('hw_2_database.db')
 c = conn.cursor()
 
-# Определить цвета телефонов, которые чаще всего покупают
+# Определяем цвета телефонов, которые чаще всего покупают
 c.execute('''
     SELECT p.color, COUNT(*) AS count
     FROM table_checkout c
@@ -94,7 +92,7 @@ c.execute('''
 ''')
 most_purchased_color = c.fetchone()
 
-# Сравнить продажи красных и синих телефонов
+# Сравниваем продажи красных и синих телефонов
 c.execute('''
     SELECT COUNT(*) AS red_count
     FROM table_checkout c
@@ -111,7 +109,7 @@ c.execute('''
 ''')
 blue_count = c.fetchone()
 
-# Найти самый непопулярный цвет телефона
+# Находим самый непопулярный цвет телефона
 c.execute('''
     SELECT p.color, COUNT(*) AS count
     FROM table_checkout c
@@ -122,11 +120,8 @@ c.execute('''
 ''')
 least_purchased_color = c.fetchone()
 
-# Вывод результатов
+# Выводим результаты
 print("Цвет телефона, который чаще всего покупают:", most_purchased_color)
 print("Количество проданных красных телефонов:", red_count)
 print("Количество проданных синих телефонов:", blue_count)
 print("Самый непопулярный цвет телефона:", least_purchased_color)
-
-# Закрытие соединения с базой данных
-conn.close()
